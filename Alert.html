@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Alert</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .sweet-alert {
+            position: relative;
+            max-width: 400px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            border: 3px solid black;
+        }
+
+        .sweet-alert.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .sweet-alert h2 {
+            margin-top: 0;
+            color: #030303;
+            font-weight: bold;
+        }
+
+        .sweet-alert p {
+            color: green;   
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .sweet-alert button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #030303;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sweet-alert button:hover {
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <button class="btn" onclick="showAlert()">Show Sweet Alert</button>
+
+    <div class="sweet-alert" id="sweetAlert">
+        <h2>Approved!</h2>
+        <video id="alertVideo" width="320" height="240" loop>
+            <source src="./check-mark-6545578-5423545.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p class="message">Leave Has Been Approved</p>
+        <button class="btn" onclick="hideAlert()">OK</button>
+    </div>
+
+    <script>
+        function showAlert() {
+            document.getElementById('sweetAlert').classList.add('active');
+            const video = document.getElementById('alertVideo');
+            video.play();
+        }
+
+        function hideAlert() {
+            document.getElementById('sweetAlert').classList.remove('active');
+            const video = document.getElementById('alertVideo');
+            video.pause();
+            video.currentTime = 0; // Reset video to the start
+        }
+    </script>
+</body>
+</html>

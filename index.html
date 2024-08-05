@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr; /* Sidebar width and main content area */
+            gap: 20px;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            position: relative; /* For overlay */
+        }
+        
+        .sidebar {
+            height: 100vh; /* Full height sidebar */
+            width: 1000px;
+            background-color: #007bff;
+            padding: 20px;
+            position: fixed;
+            left: -250px; /* Initially hidden */
+            top: 0;
+            bottom: 0;
+            transition: left 0.3s ease;
+            z-index: 1000; /* Ensure sidebar is above content */
+        }
+        
+        .show-sidebar {
+            left: 0; /* Show sidebar */
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul li a {
+            display: block;
+            padding: 10px;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            border-radius: 4px;
+        }
+        
+        .sidebar ul li a:hover {
+            background-color: #0056b3;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #007bff;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        form label {
+            margin-top: 10px;
+        }
+        
+        form input, form button {
+            margin-top: 5px;
+        }
+        
+        #calendar {
+            height: 300px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Overlay for sidebar */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 900; /* Below sidebar but above main content */
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#settings">Settings</a></li>
+            <li><a href="#leave-application">Leave Application</a></li>
+            <li><a href="#feedback">Feedback</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Employee Dashboard</h1>
+            <button onclick="toggleSidebar()">Toggle Sidebar</button>
+        </header>
+        <div class="main-content">
+            <div id="dashboard" class="clock-section card">
+                <h2>Clock In/Clock Out</h2>
+                <button id="clockInBtn" onclick="clockIn()">Clock In</button>
+                <button id="clockOutBtn" onclick="clockOut()">Clock Out</button>
+                <p id="status">Status: Not clocked in</p>
+            </div>
+            <div id="recent-status" class="recent-status card">
+                <h2>Recent Clock In/Out Status</h2>
+                <ul id="statusList"></ul>
+            </div>
+            <div id="leave-request" class="leave-request card">
+                <h2>Request Leave</h2>
+                <form id="leaveForm" onsubmit="requestLeave(event)">
+                    <label for="leaveFromDate">From Date:</label>
+                    <input type="date" id="leaveFromDate" required>
+                    <label for="leaveToDate">To Date:</label>
+                    <input type="date" id="leaveToDate" required>
+                    <label for="leaveReason">Reason:</label>
+                    <input type="text" id="leaveReason" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div id="calendar" class="calendar card">
+                <h2>Calendar</h2>
+                <div id="calendar-content"></div>
+            </div>
+            <div id="notifications" class="notifications card">
+                <h2>Notifications</h2>
+                <ul id="notificationList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <script>
+        let clockedIn = false;
+
+        function clockIn() {
+            if (!clockedIn) {
+                clockedIn = true;
+                updateStatus('Clocked in');
+                showNotification('You have clocked in.');
+            } else {
+                showNotification('You are already clocked in.', 'error');
+            }
+        }
+        
+        function clockOut() {
+            if (clockedIn) {
+                clockedIn = false;
+                updateStatus('Clocked out');
+                showNotification('You have clocked out.');
+            } else {
+                showNotification('You are not clocked in.', 'error');
+            }
+        }
+        
+        function updateStatus(status) {
+            document.getElementById('status').innerText = `Status: ${status}`;
+            const statusList = document.getElementById('statusList');
+            const listItem = document.createElement('li');
+            listItem.innerText = `${new Date().toLocaleString()}: ${status}`;
+            statusList.appendChild(listItem);
+        }
+        
+        function requestLeave(event) {
+            event.preventDefault();
+            const fromDate = document.getElementById('leaveFromDate').value;
+            const toDate = document.getElementById('leaveToDate').value;
+            const reason = document.getElementById('leaveReason').value;
+            if (fromDate && toDate && reason) {
+                const notificationList = document.getElementById('notificationList');
+                const listItem = document.createElement('li');
+                listItem.innerText = `Leave requested from ${fromDate} to ${toDate} (Reason: ${reason})`;
+                notificationList.appendChild(listItem);
+                document.getElementById('leaveForm').reset();
+                showNotification('Leave request submitted.');
+            } else {
+                showNotification('Please fill in all fields.', 'error');
+            }
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notificationList = document.getElementById('notificationList');
+            const listItem = document.createElement('li');
+            listItem.innerText = message;
+            listItem.className = type;
+            notificationList.appendChild(listItem);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('show-sidebar');
+            overlay.style.display = sidebar.classList.contains('show-sidebar') ? 'block' : 'none';
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.remove('show-sidebar');
+            overlay.style.display = 'none';
+        }
+
+        // Calendar initialization (simple example)
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarContent = document.getElementById('calendar-content');
+            const today = new Date();
+            calendarContent.innerHTML = `<h3>${today.toDateString()}</h3>`;
+        });
+    </script>
+</body>
+</html>

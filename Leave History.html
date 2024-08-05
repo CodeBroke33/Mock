@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave History</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('.//work-experience-1.jpg.webp');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 100px 15px 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: transparent;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 30px;
+            border: 3px solid black;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        h1 {
+            color: #030303;
+            padding: 15px;
+            font-weight: bold;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            margin: 40px 0;
+            border-bottom: 2px solid #030303;
+        }
+
+        .search-container label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            font-size: 1em;
+            color: #030303;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        .search-container input:focus ~ label,
+        .search-container input:valid ~ label {
+            top: -5px;
+        }
+
+        .search-container input {
+            width: 100%;
+            height: 50px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            color: #030303;
+            padding: 0 35px 0 5px;
+        }
+
+        .search-container .icon {
+            position: absolute;
+            right: 8px;
+            color: #030303;
+            font-size: 1.2em;
+            line-height: 57px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 10px;
+            border-bottom: 1px solid #030303;
+        }
+
+        th {
+            background-color: gray;
+            color: #030303;
+        }
+
+        .approved {
+            color: green;
+            padding: 5px 10px;
+            background-color: #030303;
+            border-radius: 5px;
+            border: none;
+            font-weight: bold;
+        }
+
+        .deny {
+            color: red;
+            padding: 5px 10px;
+            background-color: #030303;  
+            border-radius: 5px;
+            border: none;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: #ffc107;
+            padding: 5px 10px;
+            background-color: #030303;
+            border-radius: 5px;
+            border: none;
+            font-weight: bold;
+        }
+
+        .cert {
+           text-align: center;
+           font-size: 2em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 50px 15px;
+            }
+            
+            .card {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Leave History</h1>
+            <div class="search-container">
+                <span class="icon"><ion-icon name="search-outline"></ion-icon></span>
+                <input type="text" id="searchInput" required>
+                <label>Search intern name</label>
+            </div>
+            <table id="leaveTable">
+                <thead>
+                    <tr>
+                        <th>Intern Name</th>
+                        <th>Leave Type</th>
+                        <th>Dates</th>
+                        <th>Status</th>
+                        <th>Certificate</th>
+                        <th>Admin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>Annual Leave</td>
+                        <td>2023-01-01 to 2023-01-10</td>
+                        <td><button class="approved">Approved</button></td>
+                        <td class="cert"><ion-icon name="cloud-download"></ion-icon></td>
+                        <td>Manager1</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>Sick Leave</td>
+                        <td>2023-02-05 to 2023-02-07</td>
+                        <td><button class="pending">Pending</button></td>
+                        <td class="cert"><ion-icon name="cloud-download"></ion-icon></td>
+                        <td>Manager2</td>
+                    </tr>
+                    <tr>
+                        <td>Mark Johnson</td>
+                        <td>Maternity Leave</td>
+                        <td>2023-03-12 to 2023-06-12</td>
+                        <td><button class="deny">Denied</button></td>
+                        <td class="cert"><ion-icon name="cloud-download"></ion-icon></td>
+                        <td>Manager3</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const table = document.getElementById('leaveTable');
+            const rows = table.getElementsByTagName('tr');
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.trim().toLowerCase();
+                Array.from(rows).forEach(row => {
+                    if (row.cells) {
+                        const internName = row.cells[0].textContent.toLowerCase();
+                        if (internName.includes(searchTerm)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

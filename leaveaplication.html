@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Application</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+     <style>
+        /* Base styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #333;
+    font-weight: 700;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+label {
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+input, select, button {
+    margin-top: 5px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#fileAttachment {
+    margin-top: 10px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+li.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+li.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Animation for notification removal */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+     </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Leave Application</h1>
+        </header>
+        <div class="main-content">
+            <div class="leave-application card">
+                <h2>Request Leave</h2>
+                <form id="leaveForm" onsubmit="submitLeaveApplication(event)">
+                    <label for="fromDate">From Date:</label>
+                    <input type="date" id="fromDate" required>
+                    
+                    <label for="toDate">To Date:</label>
+                    <input type="date" id="toDate" required>
+
+                    <label for="leaveType">Leave Type:</label>
+                    <select id="leaveType" required>
+                        <option value="">Select leave type</option>
+                        <option value="Sick Leave">Sick Leave</option>
+                        <option value="Casual Leave">Anual leave Leave</option>
+                        <option value="Maternity Leave">Unpaid Leave</option>
+                        <option value="Paternity Leave">Family Responsibility</option>
+                        <option value="Public Holiday">Public Holiday</option>
+                        <option value="Maternity Leave">Maternity Leave</option>
+                        <option value="Study Leave">Study Leave</option>
+                    </select>
+
+                    <label for="leaveReason">Reason:</label>
+                    <input type="text" id="leaveReason" placeholder="Provide a brief reason" required>
+
+                    <label for="fileAttachment">Attach Document (PDF):</label>
+                    <input type="file" id="fileAttachment" accept="application/pdf" required>
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="notifications card">
+                <h2>Notifications</h2>
+                <ul id="notificationList"></ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        function submitLeaveApplication(event) {
+    event.preventDefault();
+    
+    const fromDate = document.getElementById('fromDate').value;
+    const toDate = document.getElementById('toDate').value;
+    const leaveType = document.getElementById('leaveType').value;
+    const leaveReason = document.getElementById('leaveReason').value;
+    const fileAttachment = document.getElementById('fileAttachment').files[0];
+
+    if (fromDate && toDate && leaveType && leaveReason && fileAttachment) {
+        const notificationList = document.getElementById('notificationList');
+        const listItem = document.createElement('li');
+        listItem.innerText = `Leave request from ${fromDate} to ${toDate} (${leaveType}). Reason: ${leaveReason}`;
+        listItem.classList.add('success');
+        notificationList.appendChild(listItem);
+        
+        showNotification('Leave request submitted successfully.');
+        document.getElementById('leaveForm').reset();
+    } else {
+        showNotification('Please fill in all fields and attach a document.', 'error');
+    }
+}
+
+function showNotification(message, type = 'success') {
+    const notificationList = document.getElementById('notificationList');
+    const listItem = document.createElement('li');
+    listItem.innerText = message;
+    listItem.className = type;
+    notificationList.appendChild(listItem);
+    
+    // Automatically remove the notification after 5 seconds
+    setTimeout(() => {
+        listItem.classList.add('fade-out');
+        listItem.addEventListener('transitionend', () => listItem.remove());
+    }, 5000);
+}
+
+// Basic initialization
+document.addEventListener('DOMContentLoaded', function () {
+    // Additional initialization code can go here
+});
+
+    </script>
+</body>
+</html>

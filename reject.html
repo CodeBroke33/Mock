@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #F0F2F5;
+            margin: 0;
+            padding: 0;
+            background: url('/CSS/black-gold-circle-background-gradient-Graphics-3742546-1-580x387.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .navbar {
+            display: flex;
+            height: 80px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000; /* Ensure navbar is above content */
+        }
+        .left-side, .right-side {
+            display: flex;
+            align-items: center;
+        }
+        .circle-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #030303;
+            border: none;
+            margin-right: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+        .circle-btn:hover {
+            background-color: gray;
+        }
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            color: #030303;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .icon-btn a {
+            text-decoration: none;
+            color: #030303;
+        }
+        .off-canvas {
+            position: fixed;
+            top: 0;
+            height: 100%;
+            max-width: 250px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease-in-out;
+            padding: 50px;
+            z-index: 1100; /* Higher than the navbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .left {
+            left: 0;
+            transform: translateX(-100%);
+        }
+        .right {
+            right: 0;
+            transform: translateX(100%);
+        }
+        .off-canvas.active {
+            transform: translateX(0);
+        }
+        .menu {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu p {
+            font-size: 24px; /* Increased font size */
+            margin-bottom: 20px;
+            color: #030303;
+        }
+        .menu a {
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #030303;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .close-btn {
+            /* position: ; */
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #030303;
+        }
+        @media (max-width: 600px) {
+            .welcome-text {
+                display: none;
+            }
+        }
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+        .container {
+            width: 800px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 3px solid #030303;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #030303;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        .input-box {
+            position: relative;
+            width: 100%;
+            margin: 20px 0;
+            border-bottom: 2px solid #030303;
+        }
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            font-size: 1em;
+            color: #030303;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+        .input-box input:focus ~ label,
+        .input-box input:valid ~ label,
+        .input-box textarea:focus ~ label,
+        .input-box textarea:valid ~ label {
+            top: -5px;
+        }
+        .input-box input,
+        .input-box textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1em;
+            color: #030303;
+            padding: 10px;
+        }
+        .input-box textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        button {
+            width: 100%;
+            height: 50px;
+            background-color: #030303;
+            border: none;
+            outline: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 1em;
+            color: #fff;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: gray;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background-color: #F8D7DA;
+            color: #721C24;
+            padding: 10px;
+            border: 1px solid #F5C6CB;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        li.success {
+            background-color: #D4EDDA;
+            color: #155724;
+            border-color: #C3E6CB;
+        }
+        li.fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+        @media (max-width: 300px) {
+            .container {
+                max-width: 100%;
+                margin-top: 150px;
+            }
+        }
+        #feedbackForm{
+            width: 100%;
+            max-width: 650px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="left-side">
+            <button id="menuBtn" class="circle-btn">☰</button>
+            <span class="welcome-text">Welcome ' . strtoupper($username) . '</span>
+        </div>
+        <div class="right-side">
+            <button id="notificationBtn" class="icon-btn"><a href="/?notificationintern" style="text-decoration: none;">:bell:</a></button>
+            <button id="profileBtn" class="icon-btn"><a href="/?profilesetting" style="text-decoration: none;">:silhouette:</a></button>
+        </div>
+    </nav>
+    <div class="container">
+        <header>
+            <h1>Feedback</h1>
+        </header>
+        <h2>We'd love to hear from you!</h2>
+        <form id="feedbackForm" method="POST" action="#">
+            <div class="input-box">
+                <input type="text" id="name" name="name" required>
+                <label for="name">Name:</label>
+            </div>
+            <div class="input-box">
+                <input type="text" id="subject" name="subject" required>
+                <label for="subject">Subject:</label>
+            </div>
+            <div class="input-box">
+                <textarea id="message" name="message" required></textarea>
+                <label for="message">Message:</label>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <ul id="errorMessages"></ul>
+        <ul id="successMessage"></ul>
+    </div>
+    <!-- Off-canvas menus -->
+    <div id="leftOffCanvas" class="off-canvas left">
+        <div class="menu">
+            <p>Menu</p>
+            <button class="close-btn" onclick="closeOffCanvas('leftOffCanvas')">X</button>
+            <a href="/?leaveintern">Leave</a>
+            <a href="/?internfeedback">Feedback</a>
+            <button id="logoutBtn" class="close-btn">Logout</button>
+        </div>
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menuBtn');
+            const notificationBtn = document.getElementById('notificationBtn');
+            const profileBtn = document.getElementById('profileBtn');
+            const leftOffCanvas = document.getElementById('leftOffCanvas');
+            const rightOffCanvas = document.getElementById('rightOffCanvas');
+            function toggleOffCanvas(element) {
+                element.classList.toggle('active');
+            }
+            function closeOffCanvas(id) {
+                document.getElementById(id).classList.remove('active');
+            }
+            menuBtn.addEventListener('click', () => toggleOffCanvas(leftOffCanvas));
+            notificationBtn.addEventListener('click', () => toggleOffCanvas(rightOffCanvas));
+            profileBtn.addEventListener('click', () => toggleOffCanvas(rightOffCanvas));
+            // Make closeOffCanvas function globally accessible
+            window.closeOffCanvas = closeOffCanvas;
+            // Logout functionality
+            let logoutBtn = document.getElementById("logoutBtn");
+            logoutBtn.addEventListener("click", (event) => {
+                deleteAllCookies();
+                window.location.href = "/";
+            });
+            function deleteAllCookies() {
+                var cookies = document.cookie.split(";");
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i];
+                    var eqPos = cookie.indexOf("=");
+                    var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('.//work-experience-1.jpg.webp');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 100px 15px 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: transparent;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 30px;
+            border: 3px solid black;
+            width: 90%;
+            max-width: 1000px;
+        }
+
+        h1 {
+            color: #030303;
+            padding: 15px;
+            font-weight: bold;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #030303;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #030303;
+        }
+
+        th {
+            background-color: gray;
+            color: #030303;
+        }
+
+        table img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 50px 15px;
+            }
+            
+            .card {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Timesheet</h1>
+            <div>
+                <h2>Attendance Register</h2>
+                <p><strong>NAME: USER_NAME</strong></p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                            <th>Duties</th>
+                            <th>Signature</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attendanceTableBody">
+                        <!-- Attendance records will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const attendanceData = [
+                {
+                    day: 'Monday',
+                    dayDate: '01',
+                    dayMonth: 'January',
+                    dayYear: '2024',
+                    timeIn: '09:00 AM',
+                    timeOut: '05:00 PM',
+                    duties: 'Task A, Task B',
+                    signatureSrc: 'signature1.png'
+                },
+                {
+                    day: 'Tuesday',
+                    dayDate: '02',
+                    dayMonth: 'January',
+                    dayYear: '2024',
+                    timeIn: '09:00 AM',
+                    timeOut: '05:00 PM',
+                    duties: 'Task C, Task D',
+                    signatureSrc: ''
+                }
+                // Add more attendance records as needed
+            ];
+
+            const attendanceTableBody = document.getElementById('attendanceTableBody');
+
+            if (attendanceData.length > 0) {
+                attendanceData.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.day}, ${record.dayDate} ${record.dayMonth} ${record.dayYear}</td>
+                        <td>${record.timeIn}</td>
+                        <td>${record.timeOut}</td>
+                        <td>${record.duties}</td>
+                        <td>${record.signatureSrc ? `<img src="${record.signatureSrc}" alt="Signature">` : 'Signature not available'}</td>
+                    `;
+                    attendanceTableBody.appendChild(row);
+                });
+            } else {
+                attendanceTableBody.innerHTML = '<tr><td colspan="5">No timesheet data for this user.</td></tr>';
+            }
+        });
+
+        document.getElementById('logout').addEventListener('click', function () {
+            deleteAllCookies();
+            window.location.href = "/";
+        });
+
+        document.getElementById('logoutmenu').addEventListener('click', function () {
+            deleteAllCookies();
+            window.location.href = "/";
+        });
+
+        function deleteAllCookies() {
+            const cookies = document.cookie.split(';');
+            cookies.forEach(cookie => {
+                const eqPos = cookie.indexOf('=');
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <ti tle>Intern Dashboard</ti>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+     <style>
+        /* Base styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+nav {
+    background-color: #007bff;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+header {
+    text-align: center;
+    margin: 20px 0;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #333;
+    font-weight: 700;
+}
+
+.main-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 1.5em;
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+label {
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+input, select, textarea, button {
+    margin-top: 5px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+li.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+li.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Animation for notification removal */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+     </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#leave-application">Leave Application</a></li>
+                <li><a href="#feedback">Feedback</a></li>
+                <li><a href="#settings">Settings</a></li>
+            </ul>
+        </nav>
+
+        <section id="dashboard" class="page">
+            <header>
+                <h1>Dashboard</h1>
+            </header>
+            <div class="main-content">
+                <div class="card clock-in-out">
+                    <h2>Clock In/Out</h2>
+                    <button onclick="clockIn()">Clock In</button>
+                    <button onclick="clockOut()">Clock Out</button>
+                    <p id="clockStatus">Recent clock in/out status will appear here.</p>
+                </div>
+                <div class="card request-leave">
+                    <h2>Request Leave</h2>
+                    <button onclick="requestLeave()">Request Leave</button>
+                </div>
+                <div class="card calendar">
+                    <h2>Calendar</h2>
+                    <p>Your calendar will appear here.</p>
+                </div>
+                <div class="card notifications">
+                    <h2>Notifications</h2>
+                    <ul id="dashboardNotificationList"></ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="leave-application" class="page">
+            <header>
+                <h1>Leave Application</h1>
+            </header>
+            <div class="main-content">
+                <div class="card leave-application">
+                    <h2>Request Leave</h2>
+                    <form id="leaveForm" onsubmit="submitLeaveApplication(event)">
+                        <label for="fromDate">From Date:</label>
+                        <input type="date" id="fromDate" required>
+
+                        <label for="toDate">To Date:</label>
+                        <input type="date" id="toDate" required>
+
+                        <label for="leaveType">Leave Type:</label>
+                        <select id="leaveType" required>
+                            <option value="">Select leave type</option>
+                            <option value="Sick Leave">Sick Leave</option>
+                            <option value="Casual Leave">Casual Leave</option>
+                            <option value="Maternity Leave">Maternity Leave</option>
+                            <option value="Paternity Leave">Paternity Leave</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                        <label for="leaveReason">Reason:</label>
+                        <input type="text" id="leaveReason" placeholder="Provide a brief reason" required>
+
+                        <label for="fileAttachment">Attach Document (PDF):</label>
+                        <input type="file" id="fileAttachment" accept="application/pdf" required>
+
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="card notifications">
+                    <h2>Notifications</h2>
+                    <ul id="leaveNotificationList"></ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="feedback" class="page">
+            <header>
+                <h1>Feedback</h1>
+            </header>
+            <div class="main-content">
+                <div class="card feedback-form">
+                    <h2>We'd love to hear from you!</h2>
+                    <form id="feedbackForm" onsubmit="submitFeedback(event)">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" placeholder="Your Name" required>
+
+                        <label for="subject">Subject:</label>
+                        <input type="text" id="subject" placeholder="Subject" required>
+
+                        <label for="message">Message:</label>
+                        <textarea id="message" placeholder="Your Message" required></textarea>
+
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="card notifications">
+                    <h2>Notifications</h2>
+                    <ul id="feedbackNotificationList"></ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="settings" class="page">
+            <header>
+                <h1>Settings</h1>
+            </header>
+            <div class="main-content">
+                <div class="card settings-form">
+                    <h2>Update Your Settings</h2>
+                    <form id="settingsForm" onsubmit="submitSettings(event)">
+                        <label for="username">Change Username:</label>
+                        <input type="text" id="username" placeholder="New Username" required>
+
+                        <label for="password">Change Password:</label>
+                        <input type="password" id="password" placeholder="New Password" required>
+
+                        <label for="profileImage">Upload Profile Image:</label>
+                        <input type="file" id="profileImage" accept="image/*" required>
+
+                        <label for="signature">Upload Signature:</label>
+                        <input type="file" id="signature" accept="image/*" required>
+
+                        <label for="email">Change Email:</label>
+                        <input type="email" id="email" placeholder="New Email" required>
+
+                        <label for="phone">Change Phone Number:</label>
+                        <input type="tel" id="phone" placeholder="New Phone Number" required>
+
+                        <label for="surname">Change Surname:</label>
+                        <input type="text" id="surname" placeholder="New Surname" required>
+
+                        <label for="role">Change Role:</label>
+                        <select id="role" required>
+                            <option value="">Select Role</option>
+                            <option value="Admin">Admin</option>
+                            <option value="User">User</option>
+                            <option value="Manager">Manager</option>
+                            <option value="Developer">Developer</option>
+                        </select>
+
+                        <label for="gender">Change Gender:</label>
+                        <select id="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+
+                        <button type="submit">Update Settings</button>
+                    </form>
+                </div>
+                <div class="card notifications">
+                    <h2>Notifications</h2>
+                    <ul id="settingsNotificationList"></ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function showNotification(message, type = 'success', notificationListId) {
+            const notificationList = document.getElementById(notificationListId);
+            const listItem = document.createElement('li');
+            listItem.innerText = message;
+            listItem.className = type;
+            notificationList.appendChild(listItem);
+
+            // Automatically remove the notification after 5 seconds
+            setTimeout(() => {
+                listItem.classList.add('fade-out');
+                listItem.addEventListener('transitionend', () => listItem.remove());
+            }, 5000);
+        }
+
+        function clockIn() {
+            document.getElementById('clockStatus').innerText = 'Clocked in successfully.';
+            showNotification('Clocked in successfully.', 'success', 'dashboardNotificationList');
+        }
+
+        function clockOut() {
+            document.getElementById('clockStatus').innerText = 'Clocked out successfully.';
+            showNotification('Clocked out successfully.', 'success', 'dashboardNotificationList');
+        }
+
+        function requestLeave() {
+            showNotification('Leave request initiated.', 'success', 'dashboardNotificationList');
+        }
+
+        function submitLeaveApplication(event) {
+            event.preventDefault();
+
+            const fromDate = document.getElementById('fromDate').value;
+            const toDate = document.getElementById('toDate').value;
+            const leaveType = document.getElementById('leaveType').value;
+            const leaveReason = document.getElementById('leaveReason').value;
+            const fileAttachment = document.getElementById('fileAttachment').files[0];
+
+            if (fromDate && toDate && leaveType && leaveReason && fileAttachment) {
+                showNotification(`Leave request from ${fromDate} to ${toDate} (${leaveType}). Reason: ${leaveReason}`, 'success', 'leaveNotificationList');
+                document.getElementById('leaveForm').reset();
+            } else {
+                showNotification('Please fill in all fields and attach a document.', 'error', 'leaveNotificationList');
+            }
+        }
+
+        function submitFeedback(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            if (name && subject && message) {
+                showNotification(`Feedback from ${name} on ${subject}: ${message}`, 'success', 'feedbackNotificationList');
+                document.getElementById('feedbackForm').reset();
+            } else {
+                showNotification('Please fill in all fields.', 'error', 'feedbackNotificationList');
+            }
+        }
+
+        function submitSettings(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const profileImage = document.getElementById('profileImage').files[0];
+            const signature = document.getElementById('signature').files[0];
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const surname = document.getElementById('surname').value;
+            const role = document.getElementById('role').value;
+            const gender = document.getElementById('gender').value;
+
+            if (username && password && profileImage && signature && email && phone && surname && role && gender) {
+                showNotification('Settings updated successfully.', 'success', 'settingsNotificationList');
+                document.getElementById('settingsForm').reset();
+            } else {
+                showNotification('Please fill in all fields and upload necessary files.', 'error', 'settingsNotificationList');
+            }
+        }
+    </script>
+</body>
+
+</html>

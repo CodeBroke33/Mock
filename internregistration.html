@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Registration Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('/images/Intern\ Management.jpeg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            color: #000;
+        }
+
+        .navbar-imported {
+            display: flex;
+            height: 80px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .left-side,
+        .right-side {
+            display: flex;
+            align-items: center;
+        }
+
+        .circle-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #030303;
+            border: none;
+            margin-right: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .circle-btn:hover {
+            background-color: gray;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            color: #030303;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-btn a {
+            text-decoration: none;
+            color: #030303;
+        }
+
+        .off-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 250px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%);
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .off-canvas.active {
+            transform: translateX(0);
+        }
+
+        .menu {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .menu p {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #030303;
+            font-size: 18px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .menu .btn {
+            padding: 10px 20px;
+            background-color: #030303;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 10px 0;
+        }
+
+        .menu .btn:hover {
+            background-color: gray;
+        }
+
+        .container {
+            max-width: 1700px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            border: 3px solid #030303;
+        }
+
+        h1,
+        h2 {
+            color: #030303;
+            margin-bottom: 20px;
+        }
+
+        .form-container,
+        .status-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .form-group {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #000;
+            border: none;
+            border-bottom: 2px solid #030303;
+            outline: none;
+            background: transparent;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #000;
+            pointer-events: none;
+            transition: 0.5s;
+        }
+
+        .form-group input:focus~label,
+        .form-group input:valid~label,
+        .form-group select:focus~label,
+        .form-group select:valid~label {
+            top: -20px;
+            left: 0;
+            color: #030303;
+            font-size: 12px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-bottom: 2px solid #030303;
+        }
+
+        .form-container button {
+            width: 20%;
+            padding: 10px 20px;
+            background-color: #030303;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+            display: block;
+            margin: 20px auto 0;
+        }
+
+        .form-container button:hover {
+            background-color: gray;
+        }
+
+        .status-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .status-container th,
+        .status-container td {
+            padding: 10px;
+            border: 1px solid #030303;
+            text-align: left;
+        }
+
+        .status-container th {
+            background-color: rgba(3, 3, 3, 0.1);
+        }
+
+        @media (max-width: 300px) {
+            .container {
+                width: 100%;
+                height: 100vh;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar-imported">
+        <div class="left-side">
+            <button id="menuBtn" class="circle-btn">☰</button>
+            <span class="welcome-text">Welcome Username</span>
+        </div>
+        <div class="right-side">
+            <button id="notificationBtn" class="icon-btn">
+                <a href="/?notificationintern"><ion-icon name="notifications"></ion-icon></a>
+            </button>
+            <button id="profileBtn" class="icon-btn">
+                <a href="/?profilesetting"><ion-icon name="person"></ion-icon></a>
+            </button>
+            <button id="logoutBtn" class="icon-btn">
+                <a href="/?profilesetting"><ion-icon name="log-out"></ion-icon></a>
+            </button>
+        </div>
+    </nav>
+
+    <div id="leftOffCanvas" class="off-canvas">
+        <div class="menu">
+            <button class="close-btn" onclick="closeOffCanvas('leftOffCanvas')"><ion-icon
+                    name="close"></ion-icon></button>
+            <p>Menu</p>
+            <a href="#">Dashboard</a>
+            <a href="#">Time Sheet Management</a>
+            <a href="#">Leave Management</a>
+            <a href="#">Report & Analytics</a>
+            <a href="#">Help & Support</a>
+            <a href="#">Notifications</a>
+            <a href="#">Settings</a>
+            <a href="#">Feedback</a>
+            <button id="logout" class="btn">Logout</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Intern Registration Management</h1>
+
+        <div class="form-container">
+            <h2>Register New Interns</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <input type="text" id="newInternName" name="internName" required>
+                    <label for="newInternName">Intern Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="newInternEmail" name="email" required>
+                    <label for="newInternEmail">Email</label>
+                </div>
+                <div class="form-group">
+                    <select id="newInternDepartment" name="department" required>
+                        <option value="" disabled selected></option>
+                        <option value="Software Engineering">Software Engineering</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Networking">Networking</option>
+                        <option value="Cyber Engineering">Cyber Engineering</option>
+                    </select>
+                    <label for="newInternDepartment">Department</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="newInternPosition" name="position" required>
+                    <label for="newInternPosition">Position</label>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div class="form-container">
+            <h2>Update Intern Information</h2>
+            <form id="updateForm">
+                <div class="form-group">
+                    <input type="text" id="updateInternName" name="internName" required>
+                    <label for="updateInternName">Intern Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="updateInternEmail" name="email" required>
+                    <label for="updateInternEmail">Email</label>
+                </div>
+                <div class="form-group">
+                    <select id="updateInternDepartment" name="department" required>
+                        <option value="" disabled selected></option>
+                        <option value="Software Engineering">Software Engineering</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="Networking">Networking</option>
+                        <option value="Cyber Engineering">Cyber Engineering</option>
+                    </select>
+                    <label for="updateInternDepartment">Department</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="updateInternPosition" name="position" required>
+                    <label for="updateInternPosition">Position</label>
+                </div>
+                <button type="submit">Update</button>
+            </form>
+        </div>
+
+        <div class="status-container">
+            <h2>Intern Status Tracking</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Department</th>
+                        <th>Person</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>Pending</td>
+                        <td>Management</td>
+                        <td>Ryan</td>
+                    </tr>
+                    <tr>
+                        <td>Jane Smith</td>
+                        <td>Approved</td>
+                        <td>Software Engineering</td>
+                        <td>Darron</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script>
+        function closeOffCanvas(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        document.getElementById('menuBtn').addEventListener('click', function () {
+            document.getElementById('leftOffCanvas').classList.add('active');
+        });
+    </script>
+</body>
+
+</html>

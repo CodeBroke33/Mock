@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('.//work-experience-1.jpg.webp');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            padding: 100px 15px 50px; /* Added top padding to clear the fixed navbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #030303;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: center;
+            margin: 0 -15px;
+        }
+
+        .col {
+            flex: 1;
+            padding: 0 15px;
+            margin-bottom: 30px;
+            display: flex;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 30px  ;
+            border: 3px solid black;
+            text-align: center;
+            flex: 1; /* Ensure all cards expand equally */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            color: #030303;
+            padding: 15px;
+            font-weight: bold;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1; /* Allow the card body to expand */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #030303;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background-color:gray;
+        }
+
+        .notification {
+            background-color: gray;
+            border-radius: 5px;
+            padding: 25px;
+            margin-top: 20px;
+            backdrop-filter: blur(15px);
+        }
+
+        .calendar {
+            margin-top: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        .navbar {
+            display: flex;
+            height: 80px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000; /* Ensure navbar is above content */
+        }
+
+        .left-side, .right-side {
+            display: flex;
+            align-items: center;
+        }
+
+        .circle-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #030303;
+            border: none;
+            margin-right: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        .circle-btn:hover {
+            background-color: gray;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            color: #030303;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-btn a {
+            text-decoration: none;
+            color: #030303;
+        }
+
+        .off-canvas {
+            position: fixed;
+            top: 0;
+            height: 100%;
+            max-width: 250px;
+            background-color: transparent;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease-in-out;
+            padding: 50px 20px; /* Adjusted padding */
+            z-index: 1100; /* Higher than the navbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .left {
+            left: 0;
+            transform: translateX(-100%);
+        }
+
+        .right {
+            right: 0;
+            transform: translateX(100%);
+        }
+
+        .off-canvas.active {
+            transform: translateX(0);
+        }
+
+        .menu {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+        }
+
+        .menu p {
+            font-size: 24px; /* Increased font size */
+            margin-bottom: 20px;
+        }
+
+        .menu a {
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #030303;
+            font-size: 18px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px; /* Adjusted position */
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .welcome-text {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar">
+        <div class="left-side">
+            <button id="menuBtn" class="circle-btn">☰</button>
+            <span class="welcome-text">Welcome Username</span>
+        </div>
+        <div class="right-side">
+            <button id="notificationBtn" class="icon-btn">
+                <a href="/?notificationintern"><ion-icon name="notifications"></ion-icon></a>
+            </button>
+            <button id="profileBtn" class="icon-btn">
+                <a href="/?profilesetting"><ion-icon name="person"></ion-icon></a>
+            </button>
+            <button id="logoutBtn" class="icon-btn">
+                <a href="/?profilesetting"><ion-icon name="log-out"></ion-icon></a>
+            </button>
+        </div>
+    </nav>
+    <!-- <h1>Dashboard</h1> -->
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header"><a href="/?clockIntern" style="text-decoration: none; color: whitesmoke;">Clock In / Clock Out</a></div>
+                <div class="card-body text-center">
+                    <button class="btn">Clock In</button>
+                    <button class="btn">Clock Out</button>
+                    <p>Recent Status: <span id="recent-status">Clocked Out</span></p>
+                    <h>Attend Source</h>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="card-header"><a href="/?leaveintern" style="text-decoration: none; color: whitesmoke;">Request Leave</a></div>
+                <div class="card-body text-center">
+                    <a class="btn" href="/?leaveintern" style="text-decoration: none;">Request Leave</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="flex: 2;">
+            <div class="card">
+                <div class="card-header" style="text-decoration: none; color: whitesmoke;">Calendar</div>
+                <div class="card-body calendar">
+                    <iframe src="calendar"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+           <div class="card">
+                <div class="card-header"><span><a href="/?notificationintern" style="text-decoration: none; color: whitesmoke
+                ;">Notifications</a></span></div>
+                <div class="card-body">
+                    <div class="notification">
+                        <p><strong>Meeting Reminder:</strong> Project kickoff at 3 PM</p>
+                    </div>
+                    <div class="notification">
+                        <p><strong>Leave Approved:</strong> Your leave request for July 4 has been approved</p>
+                    </div>
+                    <div class="notification">
+                        <p><strong>System Update:</strong> Maintenance scheduled for July 5</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Off-canvas menus -->
+<div id="leftOffCanvas" class="off-canvas left">
+    <div class="menu">
+        <button class="close-btn" onclick="closeOffCanvas('leftOffCanvas')"><ion-icon name="close"></ion-icon></button>
+        <p>Menu</p>
+        <a href="/?leaveintern">Leave</a>
+        <a href="/?internfeedback">Feedback</a> 
+        <button id="logout" class="btn">Logout</button>
+    </div>
+</div>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuBtn = document.getElementById('menuBtn');
+        const notificationBtn = document.getElementById('notificationBtn');
+        const profileBtn = document.getElementById('profileBtn');
+        const leftOffCanvas = document.getElementById('leftOffCanvas');
+        const rightOffCanvas = document.getElementById('rightOffCanvas');
+
+        function toggleOffCanvas(element) {
+            element.classList.toggle('active');
+        }
+
+        function closeOffCanvas(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        menuBtn.addEventListener('click', () => toggleOffCanvas(leftOffCanvas));
+        notificationBtn.addEventListener('click', () => toggleOffCanvas(rightOffCanvas));
+        profileBtn.addEventListener('click', () => toggleOffCanvas(rightOffCanvas));
+
+        // Make closeOffCanvas function globally accessible
+        window.closeOffCanvas = closeOffCanvas;
+    });
+    
+    let logout = document.getElementById("logout"); 
+
+    function deleteAllCookies() {
+        var cookies = document.cookie.split(";");
+
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+    }
+
+    logout.addEventListener("click", (event) => {
+        deleteAllCookies();
+        window.location.href = "/";
+    });
+</script>
+</body>
+</html>
